@@ -8,13 +8,21 @@ import java.net.URLConnection;
 import java.util.Scanner;
 
 public class MoneyCalculator {
+    
+    double amount;
+    double exchangeRate;
+    String currencyFrom;
+    String currencyTo;
 
     public static void main(String[] args) throws IOException {
-        System.out.print("Introduzca una cantidad en dolares: ");
-        Scanner scanner = new Scanner(System.in);
-        double amount = scanner.nextDouble();
-        double exchangeRate = getExchangeRate("USD","EUR");
-        System.out.println(amount + " dólares quivalen a " + exchangeRate*amount + " euros");
+        MoneyCalculator mc = new MoneyCalculator();
+        mc.execute();
+    }
+    
+    private void execute() throws IOException{
+        input();
+        proccess();
+        output();
     }
     
     private static double getExchangeRate(String from, String to) throws IOException {
@@ -31,6 +39,28 @@ public class MoneyCalculator {
             System.out.println(ex.getMessage());
         }
         return 0;
+    }
+
+    private void input() {
+        System.out.print("Introduzca una cantidad: ");
+        Scanner scanner = new Scanner(System.in);
+        amount = scanner.nextDouble();
+        
+        System.out.print("Introduzca la divisa de origen: ");
+        scanner = new Scanner(System.in);
+        currencyFrom = scanner.next();
+        
+        System.out.print("Introduzca la divisa de destino: ");
+        scanner = new Scanner(System.in);
+        currencyTo = scanner.next();
+    }
+
+    private void proccess() throws IOException {
+        exchangeRate = getExchangeRate(currencyFrom,currencyTo);
+    }
+
+    private void output() {
+        System.out.println(amount + " " + currencyFrom + " quivalen a " + exchangeRate*amount + " " + currencyTo);
     }
     
 }
